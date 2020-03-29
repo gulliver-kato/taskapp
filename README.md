@@ -6,7 +6,7 @@
   - name : string
   - email : string
   - password_digest : string
-  - admin : string
+  - admin : integer
 
 - task
   - id
