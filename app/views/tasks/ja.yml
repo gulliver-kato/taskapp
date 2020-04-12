@@ -1,0 +1,8 @@
+ja:
+  tasks:
+    index:
+      Name: '名前'
+      content: '内容'
+      end_date: '締切'
+      priority: '優先順位'
+      status: '進捗'
