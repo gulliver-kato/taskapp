@@ -25,3 +25,9 @@
 - label
   - id
   - name : string
+
+
+## Heroku デプロイ方法
+- アセットコンパイル
+　$ bundle exec rails assets:precompile RAILS_ENV=production
+- 
