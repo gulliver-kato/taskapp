@@ -30,4 +30,19 @@
 ## Heroku デプロイ方法
 - アセットコンパイル
 　$ bundle exec rails assets:precompile RAILS_ENV=production
-- 
+
+- Herokuのアプリを新規作成
+  $ heroku create
+
+- Herokuにログイン
+　$ heroku login
+
+- コミットする
+  $ git add -A
+  $ git commit -m " "
+
+- Herokuにデプロイをする
+  $ git push heroku master
+
+- データベースの移行
+　$ heroku run rails db:migrate
