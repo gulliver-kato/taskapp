@@ -9,8 +9,8 @@ RSpec.describe 'タスク管理機能', type: :system do
     context '終了期日を入力して、createボタンを押した場合' do
       it 'データが保存される' do
         visit new_task_path
-        fill_in 'task_end_date', with:（'2020,5,1'）
-        select_date 'task_end_date', with: '2020,5,1'
+        fill_in 'task_end_date', with: '2020,5,1'
+        # select_date 'task_end_date', with: '2020,5,1'
         click_on 'commit'
         expect(page).to have_content '2020-05-01'
       end
