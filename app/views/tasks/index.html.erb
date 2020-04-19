@@ -1,7 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Tasks</h1>
+<br>
+<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
+<%= link_to "リセット", tasks_path %>
 
+<br>
+<br>
 <table>
   <thead>
     <tr>
@@ -19,7 +24,7 @@
       <tr>
         <td class="task_row"><%= task.name %></td>
         <td><%= task.content %></td>
-        <td><%= task.end_date %></td>
+        <td class="date_row"><%= task.end_date %></td>
         <td><%= task.priority %></td>
         <td><%= task.status %></td>
         <td><%= link_to 'Show', task %></td>
