@@ -9,10 +9,15 @@ RSpec.describe 'タスク管理機能', type: :system do
     context '終了期日を入力して、createボタンを押した場合' do
       it 'データが保存される' do
         visit new_task_path
-        fill_in 'task_end_date', with: '2020,5,1'
-        # select_date 'task_end_date', with: '2020,5,1'
+        # fill_in 'end_date', with: '2020,5,1'
+        # save_and_open_page
+        select '2020', from: 'task_end_date_1i'
+        select '5', from: 'task_end_date_2i'
+        select '1', from: 'task_end_date_3i'
         click_on 'commit'
-        expect(page).to have_content '2020-05-01'
+        expect(page).to have_content '2020'
+        expect(page).to have_content '5'
+        expect(page).to have_content '1'
       end
     end
 
@@ -50,8 +55,8 @@ RSpec.describe 'タスク管理機能', type: :system do
         visit new_task_path
         fill_in 'task_name', with: 'タスク1'
         fill_in 'task_content', with: 'コンテンツ1'
-        fill_in 'task_priority', with: '1'
-        fill_in 'task_status', with: '1'
+        select '高', from: 'task_priority'
+        select '完了', from: 'task_status'
         click_on 'commit'
         expect(page).to have_content 'タスク1'
         expect(page).to have_content 'コンテンツ1'

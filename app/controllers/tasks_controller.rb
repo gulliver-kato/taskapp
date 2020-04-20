@@ -9,6 +9,12 @@ class TasksController < ApplicationController
     else
       @tasks = Task.all.order(created_at: "DESC")
     end
+
+    # if params[:sort_expired]  
+    #   @tasks = Task.all.order(priority: "ASC")
+    # else
+    #   @tasks = Task.all.order(created_at: "DESC")
+    # end
   end
 
   # GET /tasks/1
