@@ -29,13 +29,13 @@
   <div class="field">
     <%= form.label :priority %>
     <%# <%= form.number_field :priority %> 
-    <%= form.select :priority, [["高","1"], ["中","2"], ["低","3"]], include_blank: "選択して下さい" %>
+    <%= form.select :priority, [["高","高"], ["中","中"], ["低","低"]], include_blank: "選択して下さい" %>
   </div>
 
   <div class="field">
     <%= form.label :status %>
     <%# <%= form.number_field :status %>
-    <%= form.select :status, [["完了","1"], ["着手中","2"], ["未着手","3"]], include_blank: "選択して下さい" %>
+    <%= form.select :status, [["完了","完了"], ["着手中","着手中"], ["未着手","未着手"]], include_blank: "選択して下さい" %>
   </div>
 
   <div class="actions">

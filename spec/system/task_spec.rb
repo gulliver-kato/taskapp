@@ -5,6 +5,49 @@ RSpec.describe 'タスク管理機能', type: :system do
     FactoryBot.create(:second_task)
   end
 
+  describe '優先順位での並び変え' do
+    context '優先順位でソートするをクリックした場合場合' do
+      it '優先順位が高い順に並んでいる' do
+        visit tasks_path
+        click_on '優先順位でソートする'
+          task_list = all('.priority_high') 
+          expect(task_list[0]).to have_content '高'
+          expect(task_list[1]).to have_content '中'
+        end
+      end
+    end
+  
+  describe '検索機能' do
+    context 'タイトルで検索をした場合' do
+      it 'タイトルで検索ができる' do
+        visit tasks_path
+        fill_in "name", with: 'タスク1'
+        click_button 'Search'
+        expect(page).to have_content 'タスク1'
+      end
+    end
+
+    context 'ステータスで検索をした場合' do
+      it 'ステータスで検索ができる' do
+        visit tasks_path
+        select "完了", from: 'status'
+        click_button 'Search'
+        expect(page).to have_content '完了'
+      end
+    end
+
+    context 'タイトルとステータスで検索をした場合' do
+    it 'タイトルとステータスで検索ができる' do
+        visit tasks_path
+        fill_in "name", with: 'タスク1'
+        select "完了", from: 'status'
+        click_button 'Search'
+        expect(page).to have_content 'タスク1'
+        expect(page).to have_content '完了'
+      end
+    end
+  end
+
   describe '終了期限での並び変え' do
     context '終了期日を入力して、createボタンを押した場合' do
       it 'データが保存される' do

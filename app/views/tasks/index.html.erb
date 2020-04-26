@@ -1,14 +1,48 @@
+<div class="page-header">
+	<h1>タスク検索</h1>
+</div>
+
 <p id="notice"><%= notice %></p>
 
-<h1>Tasks</h1>
+<%= form_with url: tasks_path, method: :get, local: true do |form| %>
+  <div class="form-inline">
+    <div class="input-group">
+      <%= form.label :Name, class:"input-group-addon" %>
+      <%= form.text_field :name, class:"form-control" %>
+    </div>
+  </div>
+  <br>
+  
+  <div class="form-inline">
+    <div class="input-group">
+      <%= form.label :Status, class:"input-group-addon" %>
+      <%= form.select :status, [["完了","1"], ["着手中","2"], ["未着手","3"]], include_blank: "選択して下さい" , class:"caret" %>
+    </div>
+  </div>
+    
+    <%= form.hidden_field :search, value: 'true' %>
+
+  <br>
+  <div class="form-inline">
+    <div class="btn-group" >
+      <%= form.submit 'Search', class:"btn btn-default"%>
+    </div>
+  </div>
+  
+<% end %>
+
+
 <br>
-<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
-<%# <%= link_to "優先順位でソートする", tasks_path(sort_expired: "true") %>
-<%= link_to "リセット", tasks_path %>
+<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true"), class:"btn btn-primary active" %>
+<%= link_to "優先順位でソートする", tasks_path(sort_priority: "true"), class:"btn btn-primary active" %>
+<%= link_to "リセット", tasks_path, class:"btn btn-primary active" %>
 
 <br>
 <br>
-<table>
+<div class="page-header">
+	<h1>タスク一覧</h1>
+</div>
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
@@ -26,7 +60,7 @@
         <td class="task_row"><%= task.name %></td>
         <td><%= task.content %></td>
         <td class="date_row"><%= task.end_date %></td>
-        <td><%= task.priority %></td>
+        <td class="priority_high"><%= task.priority %></td>
         <td><%= task.status %></td>
         <td><%= link_to 'Show', task %></td>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
@@ -36,6 +70,7 @@
   </tbody>
 </table>
 
+<%= paginate @tasks %>
 <br>
 
-<%= link_to 'New Task', new_task_path %>
+<%= link_to 'New Task', new_task_path, class:"btn btn-primary active"%>

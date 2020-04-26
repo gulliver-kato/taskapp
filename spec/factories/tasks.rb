@@ -10,7 +10,7 @@ FactoryBot.define do
     name { 'タスク2' }
     content { 'コンテンツ2' }
     end_date { '2020-05-02' }
-    priority { '高' }
+    priority { '中' }
     status { '完了' }
   end
 end       
