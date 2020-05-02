@@ -4,10 +4,10 @@ require 'rails_helper'
 require 'selenium-webdriver'
 RSpec.describe 'タスク管理機能', type: :system do
   before do
-    @user = FactoryBot.create(:user)
-    @admin_user = FactoryBot.create(:admin_user)
-    FactoryBot.create(:task, user: @user)
-    FactoryBot.create(:second_task, user: @user)
+    @user = create(:user)
+    @admin_user = create(:admin_user)
+    create(:task, user: @user)
+    create(:second_task, user: @user)
 
     visit new_session_path
     fill_in 'session[email]', with: @user.email

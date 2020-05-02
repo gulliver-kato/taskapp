@@ -40,6 +40,7 @@ RSpec.configure do |config|
     if example.metadata[:type] == :system
       driven_by :selenium_chrome_headless, screen_size: [1400, 1400]
     end
+  config.include FactoryBot::Syntax::Methods 
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

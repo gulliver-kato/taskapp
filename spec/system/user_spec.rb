@@ -3,8 +3,8 @@
 require 'rails_helper'
 RSpec.describe 'ユーザ登録・ログイン・ログアウト機能', type: :system do
   before do
-    @user = FactoryBot.create(:user)
-    @admin_user = FactoryBot.create(:admin_user)
+    @user = create(:user)
+    @admin_user = create(:admin_user)
   end
 
   describe 'ユーザ登録のテスト' do
