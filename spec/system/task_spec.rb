@@ -1,8 +1,16 @@
 require 'rails_helper'
+require "selenium-webdriver"
 RSpec.describe 'タスク管理機能', type: :system do
   before do
-    FactoryBot.create(:task)
-    FactoryBot.create(:second_task)
+    @user = FactoryBot.create(:user)
+    @admin_user = FactoryBot.create(:admin_user)
+    FactoryBot.create(:task, user: @user)
+    FactoryBot.create(:second_task, user: @user)
+
+    visit new_session_path
+    fill_in "session[email]", with: @user.email
+    fill_in "session[password]", with: @user.password
+    click_button 'log in'
   end
 
   describe '優先順位での並び変え' do
@@ -10,9 +18,11 @@ RSpec.describe 'タスク管理機能', type: :system do
       it '優先順位が高い順に並んでいる' do
         visit tasks_path
         click_on '優先順位でソートする'
-          task_list = all('.priority_high') 
-          expect(task_list[0]).to have_content '高'
-          expect(task_list[1]).to have_content '中'
+        wait = Selenium::WebDriver::Wait.new(:timeout => 10) 
+        sleep 3
+        task_list = all('.priority_high')
+        expect(task_list[0]).to have_content '高'
+        expect(task_list[1]).to have_content '中'
         end
       end
     end
@@ -68,6 +78,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       it 'タスクが終了期限の降順に並んでいる' do
         visit tasks_path
         click_on '終了期限でソートする'
+        sleep 2
         task_list = all('.date_row') 
         expect(task_list[0]).to have_content '2020-05-02'
         expect(task_list[1]).to have_content '2020-05-01'
@@ -109,7 +120,7 @@ RSpec.describe 'タスク管理機能', type: :system do
   describe 'タスク詳細画面' do
     context '任意のタスク詳細画面に遷移した場合' do
       it '該当タスクの内容が表示されたページに遷移する' do
-        task = FactoryBot.create(:task)
+        task = FactoryBot.create(:task, user: @user)
         visit task_path(task.id)
         expect(page).to have_content 'タスク1'
         expect(page).to have_content 'コンテンツ1'

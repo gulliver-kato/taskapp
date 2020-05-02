@@ -204,3 +204,16 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  view:
+    task:
+      login: "ログインしてください"
+      new_button: "新規ユーザー作成"
+      show_button: "確認"
+      edit_button: "編集"
+      task.destroy: "削除"
+    user: 
+      user_lists: "ユーザーリスト"
+      id: "ID"
+      name: "名前"
+      admin: "管理者"
+      task_count: "タスク数"
