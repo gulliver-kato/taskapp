@@ -2,31 +2,26 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
-
+  before_action :login_check, only: %i[index new edit destroy]
   # GET /tasks
   # GET /tasks.json
   def index
-    if logged_in?
+    if params[:sort_expired]
+      @tasks = current_user.tasks.all.order(end_date: 'DESC').page(params[:page]).per(10)
+    elsif params[:sort_priority]
+      @tasks = current_user.tasks.all.order(priority: 'ASC').page(params[:page]).per(10)
+    elsif
+      @tasks = current_user.tasks.all.order(created_at: 'DESC').page(params[:page]).per(10)
+    end
 
-      if params[:sort_expired]
-        @tasks = current_user.tasks.all.order(end_date: 'DESC').page(params[:page]).per(10)
-      elsif params[:sort_priority]
-        @tasks = current_user.tasks.all.order(priority: 'ASC').page(params[:page]).per(10)
-      elsif
-        @tasks = current_user.tasks.all.order(created_at: 'DESC').page(params[:page]).per(10)
+    if params[:search].present?
+      if params[:name].present? && params[:status].present?
+        @tasks = current_user.tasks.name_search(params[:name]).status_search(params[:status]).page(params[:page]).per(10)
+      elsif params[:name].present?
+        @tasks = current_user.tasks.name_search(params[:name]).page(params[:page]).per(10)
+      elsif params[:status].present?
+        @tasks = current_user.tasks.status_search(params[:status]).page(params[:page]).per(10)
       end
-
-      if params[:search].present?
-        if params[:name].present? && params[:status].present?
-          @tasks = current_user.tasks.name_search(params[:name]).status_search(params[:status]).page(params[:page]).per(10)
-        elsif params[:name].present?
-          @tasks = current_user.tasks.name_search(params[:name]).page(params[:page]).per(10)
-        elsif params[:status].present?
-          @tasks = current_user.tasks.status_search(params[:status]).page(params[:page]).per(10)
-        end
-      end
-    else
-      redirect_to new_session_path, notice: t('view.task.login')
     end
   end
 
@@ -93,5 +88,13 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:name, :content, :end_date, :priority, :status)
+  end
+
+  def login_check
+    if logged_in? 
+      return true
+    else
+      redirect_to new_session_path, notice: t('view.task.login')
+    end
   end
 end
