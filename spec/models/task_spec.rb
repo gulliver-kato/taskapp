@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe 'scope検索', type: :model do
   context 'scopeメソッドで検索をした場合' do
     before do
-      @user = FactoryBot.create(:user)
-      @admin_user = FactoryBot.create(:admin_user)
+      @user = create(:user)
+      @admin_user = create(:admin_user)
 
-      FactoryBot.create(:task, user: @user)
-      FactoryBot.create(:second_task, user: @user)
+      create(:task, user: @user)
+      create(:second_task, user: @user)
     end
     it 'scopeメソッドでタイトル検索ができる' do
       expect(Task.name_search('タスク1').count).to eq 1
