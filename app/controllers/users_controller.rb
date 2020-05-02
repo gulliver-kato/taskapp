@@ -4,11 +4,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit]
 
   def new
-    if logged_in?
-      redirect_to user_path(current_user.id)
-    else
-      @user = User.new
-    end
+    redirect_to user_path(current_user.id) if logged_in?
+    @user = User.new unless logged_in?
   end
 
   def create
