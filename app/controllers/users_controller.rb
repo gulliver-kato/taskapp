@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit]
+  before_action :user_check, only: %i[show]
 
   def new
     redirect_to user_path(current_user.id) if logged_in?
@@ -19,9 +20,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    redirect_to root_path if current_user != @user
-  end
+  def show; end
 
   def edit; end
 
@@ -31,5 +30,9 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def user_check
+    redirect_to root_path if current_user != @user
   end
 end
