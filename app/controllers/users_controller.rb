@@ -3,10 +3,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit]
   before_action :user_check, only: %i[show]
+  before_action :login_check, only: %i[new]
 
   def new
-    redirect_to user_path(current_user.id) if logged_in?
-    @user = User.new unless logged_in?
+    @user = User.new 
   end
 
   def create
@@ -34,5 +34,9 @@ class UsersController < ApplicationController
 
   def user_check
     redirect_to root_path if current_user != @user
+  end
+
+  def login_check
+    redirect_to user_path(current_user.id) if logged_in?
   end
 end
