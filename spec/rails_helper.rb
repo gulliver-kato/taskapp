@@ -31,6 +31,13 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  # ヘッドレスモードの設定
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      driven_by :selenium_chrome_headless, screen_size: [1400, 1400]
+    end
+  end
+  
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
