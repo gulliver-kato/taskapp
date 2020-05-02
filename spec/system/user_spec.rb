@@ -33,7 +33,6 @@ RSpec.describe 'ユーザ登録・ログイン・ログアウト機能', type: :
         fill_in 'session[email]', with: 'test1@example.com'
         fill_in 'session[password]', with: '111111'
         click_button 'log in'
-        # expect(page).to have_content 'test1'
         expect(page).to have_content 'test1@example.com'
       end
       it '他人のマイページに飛ぶとタスク一覧ページに遷移するテスト' do
