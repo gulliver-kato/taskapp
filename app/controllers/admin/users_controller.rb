@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::UsersController < ApplicationController
-  before_action :admin_user
+  before_action :check_admin
   before_action :set_user, only: %i[show edit destroy update]
 
   def index
@@ -34,7 +34,7 @@ class Admin::UsersController < ApplicationController
 
   private
 
-  def admin_user
+  def check_admin
     redirect_to(root_path) unless current_user.admin?
   end
 
