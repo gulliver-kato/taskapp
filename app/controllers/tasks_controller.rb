@@ -80,8 +80,8 @@ class TasksController < ApplicationController
   end
 
   def confirm
-    　 @task = current_user.tasks.build(task_params)
-    　 render :new if @task.invalid?
+    @task = current_user.tasks.build(task_params)
+    render :new if @task.invalid?
   end
 
   private
