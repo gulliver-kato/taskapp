@@ -91,10 +91,6 @@ class TasksController < ApplicationController
   end
 
   def login_check
-    if logged_in? 
-      return true
-    else
-      redirect_to new_session_path, notice: t('view.task.login')
-    end
+      redirect_to new_session_path, notice: t('view.task.login') unless logged_in?
   end
 end
