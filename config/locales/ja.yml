@@ -217,3 +217,5 @@ ja:
       name: "名前"
       admin: "管理者"
       task_count: "タスク数"
+      destroy_confirm: 'ユーザーを削除しますか？'
+      destroy_errer: '削除出来ませんでした'

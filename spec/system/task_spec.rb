@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require "selenium-webdriver"
+require 'selenium-webdriver'
 RSpec.describe 'タスク管理機能', type: :system do
   before do
-    @user = FactoryBot.create(:user)
-    @admin_user = FactoryBot.create(:admin_user)
-    FactoryBot.create(:task, user: @user)
-    FactoryBot.create(:second_task, user: @user)
+    @user = create(:user)
+    @admin_user = create(:admin_user)
+    create(:task, user: @user)
+    create(:second_task, user: @user)
 
     visit new_session_path
-    fill_in "session[email]", with: @user.email
-    fill_in "session[password]", with: @user.password
+    fill_in 'session[email]', with: @user.email
+    fill_in 'session[password]', with: @user.password
     click_button 'log in'
   end
 
@@ -18,20 +20,20 @@ RSpec.describe 'タスク管理機能', type: :system do
       it '優先順位が高い順に並んでいる' do
         visit tasks_path
         click_on '優先順位でソートする'
-        wait = Selenium::WebDriver::Wait.new(:timeout => 10) 
-        sleep 3
+        wait = Selenium::WebDriver::Wait.new(timeout: 10)
+        sleep 3 # テスト失敗を回避
         task_list = all('.priority_high')
         expect(task_list[0]).to have_content '高'
         expect(task_list[1]).to have_content '中'
-        end
       end
     end
-  
+  end
+
   describe '検索機能' do
     context 'タイトルで検索をした場合' do
       it 'タイトルで検索ができる' do
         visit tasks_path
-        fill_in "name", with: 'タスク1'
+        fill_in 'name', with: 'タスク1'
         click_button 'Search'
         expect(page).to have_content 'タスク1'
       end
@@ -40,17 +42,17 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'ステータスで検索をした場合' do
       it 'ステータスで検索ができる' do
         visit tasks_path
-        select "完了", from: 'status'
+        select '完了', from: 'status'
         click_button 'Search'
         expect(page).to have_content '完了'
       end
     end
 
     context 'タイトルとステータスで検索をした場合' do
-    it 'タイトルとステータスで検索ができる' do
+      it 'タイトルとステータスで検索ができる' do
         visit tasks_path
-        fill_in "name", with: 'タスク1'
-        select "完了", from: 'status'
+        fill_in 'name', with: 'タスク1'
+        select '完了', from: 'status'
         click_button 'Search'
         expect(page).to have_content 'タスク1'
         expect(page).to have_content '完了'
@@ -78,8 +80,8 @@ RSpec.describe 'タスク管理機能', type: :system do
       it 'タスクが終了期限の降順に並んでいる' do
         visit tasks_path
         click_on '終了期限でソートする'
-        sleep 2
-        task_list = all('.date_row') 
+        sleep 2 # テスト失敗を回避
+        task_list = all('.date_row')
         expect(task_list[0]).to have_content '2020-05-02'
         expect(task_list[1]).to have_content '2020-05-01'
       end
@@ -88,7 +90,7 @@ RSpec.describe 'タスク管理機能', type: :system do
 
   describe 'タスク一覧画面' do
     context 'タスクを作成した場合' do
-      it '作成済みのタスクが表示される'do
+      it '作成済みのタスクが表示される' do
         visit tasks_path
         expect(page).to have_content 'タスク1'
       end
@@ -125,6 +127,6 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(page).to have_content 'タスク1'
         expect(page).to have_content 'コンテンツ1'
       end
-    end  
+    end
   end
 end

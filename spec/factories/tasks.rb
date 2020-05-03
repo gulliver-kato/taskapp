@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :task do
     name { 'タスク1' }
@@ -15,4 +17,4 @@ FactoryBot.define do
     status { '完了' }
     user
   end
-end       
+end

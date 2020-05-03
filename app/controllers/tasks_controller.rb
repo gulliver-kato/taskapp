@@ -1,30 +1,27 @@
-class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+# frozen_string_literal: true
 
+class TasksController < ApplicationController
+  before_action :set_task, only: %i[show edit update destroy]
+  before_action :login_check, only: %i[index new edit destroy]
   # GET /tasks
   # GET /tasks.json
   def index
-    if logged_in? 
-    
-      if params[:sort_expired]  
-        @tasks = current_user.tasks.all.order(end_date: "DESC").page(params[:page]).per(10)
-      elsif params[:sort_priority]
-        @tasks = current_user.tasks.all.order(priority: "ASC").page(params[:page]).per(10)
-      elsif
-        @tasks = current_user.tasks.all.order(created_at: "DESC").page(params[:page]).per(10)
-      end
+    if params[:sort_expired]
+      @tasks = current_user.tasks.all.order(end_date: 'DESC').page(params[:page]).per(10)
+    elsif params[:sort_priority]
+      @tasks = current_user.tasks.all.order(priority: 'ASC').page(params[:page]).per(10)
+    elsif
+      @tasks = current_user.tasks.all.order(created_at: 'DESC').page(params[:page]).per(10)
+    end
 
-      if params[:search].present?
-        if params[:name].present? && params[:status].present?
-          @tasks = current_user.tasks.name_search(params[:name]).status_search(params[:status]).page(params[:page]).per(10)
-        elsif params[:name].present?
-          @tasks = current_user.tasks.name_search(params[:name]).page(params[:page]).per(10)
-        elsif params[:status].present?
-          @tasks = current_user.tasks.status_search(params[:status]).page(params[:page]).per(10)
-        end
+    if params[:search].present?
+      if params[:name].present? && params[:status].present?
+        @tasks = current_user.tasks.name_search(params[:name]).status_search(params[:status]).page(params[:page]).per(10)
+      elsif params[:name].present?
+        @tasks = current_user.tasks.name_search(params[:name]).page(params[:page]).per(10)
+      elsif params[:status].present?
+        @tasks = current_user.tasks.status_search(params[:status]).page(params[:page]).per(10)
       end
-    else
-      redirect_to new_session_path, notice: t('view.task.login')
     end
   end
 
@@ -34,14 +31,13 @@ class TasksController < ApplicationController
   end
 
   # GET /tasks/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /tasks
   # POST /tasks.json
   def create
     @task = Task.new(task_params)
-    @task = current_user.tasks.build(task_params) 
+    @task = current_user.tasks.build(task_params)
 
     respond_to do |format|
       if @task.save
@@ -78,19 +74,23 @@ class TasksController < ApplicationController
     end
   end
 
-  def confirm 
-    　@task = current_user.tasks.build(task_params)
-    　 render :new if @task.invalid? 
-  end    
+  def confirm
+    @task = current_user.tasks.build(task_params)
+    render :new if @task.invalid?
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:name, :content, :end_date, :priority, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:name, :content, :end_date, :priority, :status)
+  end
+
+  def login_check
+      redirect_to new_session_path, notice: t('view.task.login') unless logged_in?
+  end
 end

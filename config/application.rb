@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -18,10 +20,8 @@ module Taskapp
                        routing_specs: false,
                        controller_specs: false,
                        request_specs: false
-    config.time_zone = 'Tokyo'
-    config.active_record.default_timezone = :local
+      config.time_zone = 'Tokyo'
+      config.active_record.default_timezone = :local
     end
   end
 end
-
-

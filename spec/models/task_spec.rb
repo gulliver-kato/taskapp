@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'scope検索', type: :model do
   context 'scopeメソッドで検索をした場合' do
     before do
-      @user = FactoryBot.create(:user)
-      @admin_user = FactoryBot.create(:admin_user)
+      @user = create(:user)
+      @admin_user = create(:admin_user)
 
-      FactoryBot.create(:task, user: @user)
-      FactoryBot.create(:second_task, user: @user)
+      create(:task, user: @user)
+      create(:second_task, user: @user)
     end
-    it "scopeメソッドでタイトル検索ができる" do
+    it 'scopeメソッドでタイトル検索ができる' do
       expect(Task.name_search('タスク1').count).to eq 1
     end
-    it "scopeメソッドでステータス検索ができる" do
+    it 'scopeメソッドでステータス検索ができる' do
       expect(Task.status_search('完了').count).to eq 2
     end
-    it "scopeメソッドでタイトルとステータスの両方が検索できる" do
+    it 'scopeメソッドでタイトルとステータスの両方が検索できる' do
       expect(Task.name_search('タスク1').status_search('完了').count).to eq 1
     end
   end
@@ -27,7 +29,7 @@ RSpec.describe 'タスク管理機能', type: :model do
   end
   it 'titleが空ならバリデーションが通らない' do
     task = Task.new(name: '', content: '失敗テスト')
-    
+
     expect(task).not_to be_valid
   end
   it 'contentが空ならバリデーションが通らない' do
