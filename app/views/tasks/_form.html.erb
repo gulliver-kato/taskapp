@@ -15,7 +15,6 @@
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
-
   <div class="field">
     <%= form.label :content %>
     <%= form.text_area :content %>
@@ -36,6 +35,11 @@
     <%= form.label :status %>
     <%# <%= form.number_field :status %>
     <%= form.select :status, [["完了","完了"], ["着手中","着手中"], ["未着手","未着手"]], include_blank: "選択して下さい" %>
+  </div>
+
+  <br> <br>
+  <div class="field">
+    <%= form.collection_check_boxes(:label_ids, Label.all, :id, :name) %>
   </div>
 
   <div class="actions">

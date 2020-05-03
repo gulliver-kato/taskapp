@@ -10,4 +10,6 @@ class Task < ApplicationRecord
   scope :name_search, ->(text_serach) { where('name LIKE ?', "%#{text_serach}%") }
   scope :status_search, ->(text_serach) { where(status: text_serach) }
   belongs_to :user
+  has_many :labellings, dependent: :destroy
+  has_many :labels, through: :labellings
 end
