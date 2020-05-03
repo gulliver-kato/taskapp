@@ -6,6 +6,9 @@ RSpec.describe 'タスク管理機能', type: :system do
   before do
     @user = create(:user)
     @admin_user = create(:admin_user)
+
+    @label1 = create(:label1)
+    @label2 = create(:label2)
     create(:task, user: @user)
     create(:second_task, user: @user)
 
@@ -15,13 +18,47 @@ RSpec.describe 'タスク管理機能', type: :system do
     click_button 'log in'
   end
 
+  describe 'ラベル管理について' do
+    context 'ラベル登録がされていない場合' do
+      it 'タスクにラベルを登録する' do
+        visit new_task_path
+        fill_in 'task_name', with: 'タスク1'
+        fill_in 'task_content', with: 'コンテンツ1'
+        select '高', from: 'task_priority'
+        select '完了', from: 'task_status'
+        check 'label1'
+        click_on 'commit'
+        expect(page).to have_content 'label1'
+      end
+      it 'タスクに複数ラベルを登録する' do
+        visit new_task_path
+        fill_in 'task_name', with: 'タスク1'
+        fill_in 'task_content', with: 'コンテンツ1'
+        select '高', from: 'task_priority'
+        select '完了', from: 'task_status'
+        check 'label1'
+        check 'label2'
+        click_on 'commit'
+        expect(page).to have_content 'label1'
+        expect(page).to have_content 'label2'
+      end
+    end
+    context `タスク一覧がソートされていない場合` do
+      it 'ラベルでタスクが検索できる' do
+          visit tasks_path
+          select 'label1', from: 'label_id'
+          click_button '検索'
+          expect(page).to have_content 'label1'
+      end
+    end
+  end
   describe '優先順位での並び変え' do
-    context '優先順位でソートするをクリックした場合場合' do
+    context '優先順位でソートするをクリックした場合' do
       it '優先順位が高い順に並んでいる' do
         visit tasks_path
         click_on '優先順位でソートする'
         wait = Selenium::WebDriver::Wait.new(timeout: 10)
-        sleep 3 # テスト失敗を回避
+        sleep 0.5 # テスト失敗を回避
         task_list = all('.priority_high')
         expect(task_list[0]).to have_content '高'
         expect(task_list[1]).to have_content '中'
@@ -80,7 +117,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       it 'タスクが終了期限の降順に並んでいる' do
         visit tasks_path
         click_on '終了期限でソートする'
-        sleep 2 # テスト失敗を回避
+        sleep 0.5 # テスト失敗を回避
         task_list = all('.date_row')
         expect(task_list[0]).to have_content '2020-05-02'
         expect(task_list[1]).to have_content '2020-05-01'
