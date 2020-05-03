@@ -12,8 +12,11 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.save
-    redirect_to(admin_users_path)
+    if @user.save
+      redirect_to(admin_users_path)
+    else
+      render :new
+    end
   end
 
   def show; end
@@ -21,13 +24,19 @@ class Admin::UsersController < ApplicationController
   def edit; end
 
   def update
-    @user.update(user_params)
-    redirect_to(admin_users_path)
+    if @user.update(user_params)
+      redirect_to(admin_users_path)
+    else
+      render :edit
+    end
   end
 
   def destroy
-    @user.destroy
-    redirect_to(admin_users_path)
+    if @user.destroy
+      redirect_to(admin_users_path)
+    else
+      redirect_to admin_users_path, notice: t('view.user.destroy_errer')
+    end
   end
 
   private
