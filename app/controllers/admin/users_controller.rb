@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Admin::UsersController < ApplicationController
   before_action :check_admin
   before_action :set_user, only: %i[show edit destroy update]
@@ -35,7 +33,11 @@ class Admin::UsersController < ApplicationController
   private
 
   def check_admin
-    redirect_to(root_path) unless current_user.admin?
+    if logged_in? # ログインしている場合
+      redirect_to(root_path) unless current_user.admin? # adminでなければ、タスク一覧へリダイレクト
+    else # ログインしていない場合
+      redirect_to(new_session_path) # ログインページへリダイレクト
+    end
   end
 
   def user_params
